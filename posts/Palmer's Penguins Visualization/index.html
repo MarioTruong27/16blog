@@ -201,7 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="reading-in-the-data" class="level1">
 <h1>Reading in the Data</h1>
 <p>First, we read in the data from a url using <code>pandas</code> to create a dataframe.</p>
-<div id="7727d445" class="cell" data-execution_count="1">
+<div id="19870a8e" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/pic16b-ucla/24W/main/datasets/palmer_penguins.csv"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> pd.read_csv(url) <span class="co"># read in data</span></span>
@@ -209,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>islands <span class="op">=</span> penguins[<span class="st">"Island"</span>].unique() <span class="co"># get a list of the different islands</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>penguins.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="25">
+<div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 
 
@@ -347,50 +347,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plotting" class="level1">
 <h1>Plotting</h1>
 <p>Now, we plot our data using <code>matplotlib</code>.</p>
-<div id="e9f8dfba" class="cell" data-execution_count="2">
+<div id="bee3d524" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt <span class="co"># import pyplot </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After importing <code>pyplot</code>, we should start building up to our final plot (it will be a bunch of histograms). Let’s create the <code>make_hist</code> function to plot our data.</p>
-<div id="72d1d79e" class="cell" data-execution_count="3">
+<div id="74cd7cb5" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_hist(row, island):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make histogram for males on the left from a specific island</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].hist(penguins[[<span class="st">"Body Mass (g)"</span>]][(penguins[<span class="st">"Sex"</span>]<span class="op">==</span><span class="st">"MALE"</span>) <span class="op">&amp;</span> (penguins[<span class="st">"Island"</span>]<span class="op">==</span>island)])</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set consistent limits of histograms</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_xlim([<span class="dv">2500</span>,<span class="dv">6500</span>])</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_ylim([<span class="dv">0</span>,<span class="dv">25</span>])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    This function puts our data into histograms, and it makes one row at a time. </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Each row will have a different island that the data is from. </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make histogram for males on the left from a specific island</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].hist(penguins[[<span class="st">"Body Mass (g)"</span>]][(penguins[<span class="st">"Sex"</span>]<span class="op">==</span><span class="st">"MALE"</span>) <span class="op">&amp;</span> (penguins[<span class="st">"Island"</span>]<span class="op">==</span>island)])</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make histogram for females on the right from a specific island</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].hist(penguins[[<span class="st">"Body Mass (g)"</span>]][(penguins[<span class="st">"Sex"</span>]<span class="op">==</span><span class="st">"FEMALE"</span>) <span class="op">&amp;</span> (penguins[<span class="st">"Island"</span>]<span class="op">==</span>island)], color <span class="op">=</span> <span class="st">"orange"</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set consistent limits of histograms</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_xlim([<span class="dv">2500</span>,<span class="dv">6500</span>])</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_ylim([<span class="dv">0</span>,<span class="dv">25</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set consistent limits of histograms</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_xlim([<span class="dv">2500</span>,<span class="dv">6500</span>])</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_ylim([<span class="dv">0</span>,<span class="dv">25</span>])</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make histogram for females on the right from a specific island</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].hist(penguins[[<span class="st">"Body Mass (g)"</span>]][(penguins[<span class="st">"Sex"</span>]<span class="op">==</span><span class="st">"FEMALE"</span>) <span class="op">&amp;</span> (penguins[<span class="st">"Island"</span>]<span class="op">==</span>island)], color <span class="op">=</span> <span class="st">"orange"</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set consistent limits of histograms</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_xlim([<span class="dv">2500</span>,<span class="dv">6500</span>])</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_ylim([<span class="dv">0</span>,<span class="dv">25</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Without the consistent limits that we set, it would be hard to really compare our data between each histogram. Otherwise, our sense of scale is thrown off.</p>
 <p>Next, we will create a function to label everything and create our titles.</p>
-<div id="9e979ce2" class="cell" data-execution_count="4">
+<div id="1c1e3772" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> set_text(row, island):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the labels for the x-axis</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_xlabel(<span class="st">"Body Mass (g)"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_xlabel(<span class="st">"Body Mass (g)"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the labels for the y-axis</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_ylabel(<span class="st">"Number of Penguins"</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_ylabel(<span class="st">"Number of Penguins"</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the titles for the histograms</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_title(<span class="st">"Male Penguins from "</span> <span class="op">+</span> islands[row]) </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_title(<span class="st">"Female Penguins from "</span> <span class="op">+</span> islands[row]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">    This function labels and titles most everything in our final figure</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the labels for the x-axis</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_xlabel(<span class="st">"Body Mass (g)"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_xlabel(<span class="st">"Body Mass (g)"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the labels for the y-axis</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_ylabel(<span class="st">"Number of Penguins"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_ylabel(<span class="st">"Number of Penguins"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the titles for the histograms</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">0</span>].set_title(<span class="st">"Male Penguins from "</span> <span class="op">+</span> islands[row]) </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    ax[row, <span class="dv">1</span>].set_title(<span class="st">"Female Penguins from "</span> <span class="op">+</span> islands[row]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we join these two functions to a bigger function that will make a row when it is run.</p>
-<div id="136dfd10" class="cell" data-execution_count="5">
+<div id="309b482e" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_row(row, island):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    make_hist(row, island)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    set_text(row, island)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">    This function completely creates a row by </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">    plotting the data and labeling it. </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    make_hist(row, island)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    set_text(row, island)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The last thing to do is to create our subplots, make a row for each island, and top it off by titling the whole figure.</p>
-<div id="1488c256" class="cell" data-execution_count="6">
+<div id="933c9461" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create one plot for males, one for females, and make a row for each island</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="bu">len</span>(islands), <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="dv">17</span>))</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -398,7 +409,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    make_row(index, island) <span class="co"># make each row</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"Body Mass (g) of Palmer's Penguins"</span>) <span class="co"># set title of the whole figure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>Text(0.5, 0.98, "Body Mass (g) of Palmer's Penguins")</code></pre>
 </div>
 <div class="cell-output cell-output-display">
