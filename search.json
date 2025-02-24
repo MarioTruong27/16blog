@@ -14,11 +14,67 @@
     "text": "This is a post with executable code."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Mario’s 16blog",
+    "objectID": "posts/Modeling Heat/index.html",
+    "href": "posts/Modeling Heat/index.html",
+    "title": "Modeling Heat",
     "section": "",
-    "text": "Web Scraping The Movie Database\n\n\n\n\n\n\nScrapy\n\n\n\n\n\n\n\n\n\nFeb 10, 2025\n\n\nMario\n\n\n\n\n\n\n\n\n\n\n\n\nPalmer’s Penguins Data Visualization\n\n\n\n\n\n\nmatplotlib\n\n\n\n\n\n\n\n\n\nJan 25, 2025\n\n\nMario\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 25, 2025\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nYOOOO What’s Up\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 22, 2025\n\n\nMario Truong\n\n\n\n\n\n\nNo matching items"
+    "text": "In this post, we will be modeling heat propogation through discretized models of a differential equation."
+  },
+  {
+    "objectID": "posts/Modeling Heat/index.html#matrix-vector-product-simulations",
+    "href": "posts/Modeling Heat/index.html#matrix-vector-product-simulations",
+    "title": "Modeling Heat",
+    "section": "Matrix-Vector Product Simulations",
+    "text": "Matrix-Vector Product Simulations\nTo visualize and model the heat distribution, our first two methods will use matrix-vector products to iterate over time. For these reasons, our simulation functions will have an input A which is the matrix we will use to iterate. The next_state function is what we will use to solve the next state in our simulation.\nOur first function runs the simulation by itself for 2700 iterations.\n\ndef sim_matvecmul(A, next_state):\n    u = u0\n    for i in range(2700):\n        u = next_state(A, u, epsilon)\n\nThis function is used to visualize how the simulation changes over time, giving us a figure with snapshots every 300 iterations.\n\ndef vis_matvecmul(A, next_state):\n    fig, ax = plt.subplots(3, 3, figsize = (10, 10))\n    u = u0\n    for i in range(2700):\n        u = next_state(A, u, epsilon)\n        if (i + 1) % 300 == 0:\n            ax_idx = ((i + 1) // 300) - 1\n            row = ax_idx // 3\n            col = ax_idx % 3\n            ax[row, col].imshow(u)\n            ax[row, col].set_title(f\"{i+1} iterations\")\n\n    plt.show()"
+  },
+  {
+    "objectID": "posts/Modeling Heat/index.html#direct-operation-simulations",
+    "href": "posts/Modeling Heat/index.html#direct-operation-simulations",
+    "title": "Modeling Heat",
+    "section": "Direct Operation Simulations",
+    "text": "Direct Operation Simulations\nOur next 2 strategies will solve the next state directly from the previous state by analyzing the surrounding points. For this reason, we don’t need to have a function that gets a matrix. As a result, these functions are similar to the previous ones.\n\ndef sim_direct(next_state):\n    u = u0\n    for i in range(2700):\n        u = next_state(u, epsilon)\n\n\ndef vis_direct(next_state):\n    fig, ax = plt.subplots(3, 3, figsize = (10, 10))\n    u = u0\n    for i in range(2700):\n        u = next_state(u, epsilon)\n        if (i + 1) % 300 == 0:\n            ax_idx = ((i + 1) // 300) - 1\n            row = ax_idx // 3\n            col = ax_idx % 3\n            ax[row, col].imshow(u)\n            ax[row, col].set_title(f\"{i+1} iterations\")\n\n    plt.show()"
+  },
+  {
+    "objectID": "posts/Modeling Heat/index.html#visualization-and-measurement",
+    "href": "posts/Modeling Heat/index.html#visualization-and-measurement",
+    "title": "Modeling Heat",
+    "section": "Visualization and Measurement",
+    "text": "Visualization and Measurement\nNow, let’s see what our simulation looks like and how long it takes. First, we get our matrix:\n\nA = get_A(N)\n\nThen we use our visualization function.\n\nvis_matvecmul(A=A, next_state=advance_time_matvecmul)\n\n\n\n\n\n\n\n\nThis will show us how long our code takes. This specific model takes a horribly long time, so we will see how to make it better later on.\n%%timeit\nsim_matvecmul(A=A, next_state=advance_time_matvecmul)\nOn my machine, this gives me 1min 39s ± 6.51 s per loop (mean ± std. dev. of 7 runs, 1 loop each)"
+  },
+  {
+    "objectID": "posts/Modeling Heat/index.html#visualization-and-measurement-1",
+    "href": "posts/Modeling Heat/index.html#visualization-and-measurement-1",
+    "title": "Modeling Heat",
+    "section": "Visualization and Measurement",
+    "text": "Visualization and Measurement\nAgain, we first get our matrix, but we now use our new function.\n\nsparse_A = get_sparse_A(N)\n\nThen we visualize our data again. It should look the same\n\nvis_matvecmul(A=sparse_A, next_state=jitted_advance_time_matvecmul)\n\n\n\n\n\n\n\n\nThen we see just how much faster it is. Remember to run the jitted function so that it compiles before you test how fast it is.\n%%timeit\nsim_matvecmul(A=sparse_A, next_state=jitted_advance_time_matvecmul)\nOn my machine, this yields 11.6 s ± 180 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)"
+  },
+  {
+    "objectID": "posts/Modeling Heat/index.html#visualization-and-measurement-2",
+    "href": "posts/Modeling Heat/index.html#visualization-and-measurement-2",
+    "title": "Modeling Heat",
+    "section": "Visualization and Measurement",
+    "text": "Visualization and Measurement\nNow, we use our second set of simulation and visualization functions.\n\nvis_direct(next_state=advance_time_numpy)\n\n\n\n\n\n\n\n\nLet’s see how fast it is\n%%timeit\nsim_direct(next_state=advance_time_numpy)\nOn my machine, this yields 365 ms ± 14.6 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)"
+  },
+  {
+    "objectID": "posts/Modeling Heat/index.html#visualization-and-measurement-3",
+    "href": "posts/Modeling Heat/index.html#visualization-and-measurement-3",
+    "title": "Modeling Heat",
+    "section": "Visualization and Measurement",
+    "text": "Visualization and Measurement\n\nvis_direct(next_state=advance_time_jax)\n\n\n\n\n\n\n\n\nAgain, don’t forget to compile your function before timing it.\n%%timeit\nsim_direct(next_state=advance_time_jax)\nOn my machine, I get 36 ms ± 2.82 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)"
+  },
+  {
+    "objectID": "posts/Modeling Heat/index.html#implementation",
+    "href": "posts/Modeling Heat/index.html#implementation",
+    "title": "Modeling Heat",
+    "section": "Implementation",
+    "text": "Implementation\nI can see why the first two types of simulation could be better in some use cases, as simply multiplying a matrix by a vector to iterate is nice and simple. However, I found the latter two simulations to be the easiest to understand, especially with my intuition for heat dissipation. Naturally, heat would move in from the surrounding points and out of the central point, which makes that part of the calculation make sense. The rest is simply shuffling the matrix so that we can add it simply."
+  },
+  {
+    "objectID": "posts/Modeling Heat/index.html#speed",
+    "href": "posts/Modeling Heat/index.html#speed",
+    "title": "Modeling Heat",
+    "section": "Speed",
+    "text": "Speed\nI want to acknowledge here that I didn’t actually run the timing code on this webpage, as that first simulation is insanely slow. The first observation is that these simulations are ordered such that the fastest simulation comes last.\nWe can see that our second simulation is about 10x faster than our first simulation (especially when considering the high standard deviation). After that, the third simulation is well over 100x faster than the first simulation (more than 200x, even), and the fourth simulation was the fastest overall, being about 10x faster than even the third simulation. As we can see, the jit-ing of the functions really goes a long way towards making the simulation go faster, and also that the alternate approach of direct operations can be very fast in some situations."
   },
   {
     "objectID": "about.html",
@@ -26,6 +82,13 @@
     "title": "About",
     "section": "",
     "text": "About this blog"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Mario’s 16blog",
+    "section": "",
+    "text": "Modeling Heat\n\n\n\n\n\n\nnumpy\n\n\njax\n\n\n\n\n\n\n\n\n\nFeb 23, 2025\n\n\nMario\n\n\n\n\n\n\n\n\n\n\n\n\nWeb Scraping The Movie Database\n\n\n\n\n\n\nScrapy\n\n\n\n\n\n\n\n\n\nFeb 10, 2025\n\n\nMario\n\n\n\n\n\n\n\n\n\n\n\n\nPalmer’s Penguins Data Visualization\n\n\n\n\n\n\nmatplotlib\n\n\n\n\n\n\n\n\n\nJan 25, 2025\n\n\nMario\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 25, 2025\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nYOOOO What’s Up\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 22, 2025\n\n\nMario Truong\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/Palmer's Penguins Visualization/index.html",
